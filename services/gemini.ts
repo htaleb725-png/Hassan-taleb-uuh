@@ -1,11 +1,19 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { OCRResult } from "../types";
+import { OCRResult } from "../types.ts";
 
-const API_KEY = process.env.API_KEY || "";
+// استخدام حماية لضمان عدم تعطل التطبيق إذا كان process غير معرف
+const getApiKey = () => {
+  try {
+    return (window as any).process?.env?.API_KEY || "";
+  } catch (e) {
+    return "";
+  }
+};
 
 export const performSmartOCR = async (base64Image: string): Promise<OCRResult> => {
-  const ai = new GoogleGenAI({ apiKey: API_KEY });
+  const apiKey = getApiKey();
+  const ai = new GoogleGenAI({ apiKey });
   const cleanBase64 = base64Image.split(',')[1] || base64Image;
 
   const response = await ai.models.generateContent({
@@ -33,7 +41,8 @@ export const performSmartOCR = async (base64Image: string): Promise<OCRResult> =
   });
 
   try {
-    return JSON.parse(response.text);
+    const text = response.text || "{}";
+    return JSON.parse(text);
   } catch (e) {
     console.error("Parsing Error", e);
     throw new Error("فشل في تحليل بيانات المستند هيكلياً.");

@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, PlusCircle, Search, LogOut, FileText, Menu, X, User as UserIcon, Settings as SettingsIcon 
 } from 'lucide-react';
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
-import AddRequest from './components/AddRequest';
-import RequestList from './components/RequestList';
-import RequestDetails from './components/RequestDetails';
-import SettingsPage from './components/SettingsPage';
-import { RequestEntry, User, AppSettings } from './types';
+import Login from './components/Login.tsx';
+import Dashboard from './components/Dashboard.tsx';
+import AddRequest from './components/AddRequest.tsx';
+import RequestList from './components/RequestList.tsx';
+import RequestDetails from './components/RequestDetails.tsx';
+import SettingsPage from './components/SettingsPage.tsx';
+import { RequestEntry, User, AppSettings } from './types.ts';
 
 const DEFAULT_SETTINGS: AppSettings = {
   googleSheetsUrl: '',
@@ -45,7 +45,6 @@ const App: React.FC = () => {
     localStorage.setItem('app_settings', JSON.stringify(settings));
     document.documentElement.style.setProperty('--primary-color', settings.primaryColor);
     
-    // حساب الألوان الشفافة للحواف والخلفيات الخفيفة
     const hex = settings.primaryColor.replace('#', '');
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
@@ -104,7 +103,6 @@ const App: React.FC = () => {
         .ring-primary:focus { --tw-ring-color: var(--primary-color); }
       `}</style>
 
-      {/* Sidebar */}
       <aside className={`fixed inset-y-0 right-0 z-40 w-72 bg-slate-900 text-white transition-transform duration-300 lg:translate-x-0 lg:static ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="p-8 h-full flex flex-col">
           <div className="flex items-center gap-4 mb-12">
@@ -154,7 +152,6 @@ const App: React.FC = () => {
         </div>
       </aside>
 
-      {/* Main Main Content */}
       <main className="flex-1 overflow-y-auto p-4 lg:p-10 relative">
         <button 
           onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
